@@ -2,7 +2,7 @@ import "./globals.css";
 import LayoutClient from "./layoutClient";
 
 export const metadata = {
-  title: "Navegación",
+  title: "Ecommerce",
   description: "Proyecto con Header y navegación",
 };
 
