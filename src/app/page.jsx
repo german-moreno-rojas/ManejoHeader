@@ -8,7 +8,7 @@ export default function HomePage() {
     <main className="bg-white text-gray-800">
       <section className="relative w-full h-[550px]">
         <img
-          src="https://img.freepik.com/fotos-premium/coleccion-coloridas-camisetas-colgadas-perchas-madera-sobre-fondo-blanco_43448-307.jpg"
+          src="https://cdn.pixabay.com/photo/2024/10/10/11/14/coat-hanging-9110646_960_720.jpg"
           alt="Hero de inicio"
           className="w-full h-full object-cover"
         />
@@ -48,11 +48,11 @@ export default function HomePage() {
         {/* Tabs */}
         <div className="flex justify-center mb-10">
           <ul className="flex gap-10 text-gray-600 text-lg">
-            <li className="font-semibold text-black border-b-2 border-black pb-1 cursor-pointer">
+            <li className="font-semibold text-black border-b-2 border-black pb-1 cursor-pointer"><Link href="/hombres">
               Mens
-            </li>
-            <li className="hover:text-black cursor-pointer">Womens</li>
-            <li className="hover:text-black cursor-pointer">Objects</li>
+            </Link></li>
+            <li className="hover:text-black cursor-pointer"><Link href="/mujeres">Womens</Link></li>
+            <li className="hover:text-black cursor-pointer"><Link href="/objetos">Objects</Link></li>
           </ul>
         </div>
 
@@ -68,7 +68,7 @@ export default function HomePage() {
             price="$30.000"
           />
           <ProductCard
-            image="https://samiacl02.akamaized.net/7753-large_default/traje-de-bano-hombre-azul.jpg"
+            image="https://www.asics.com.co/arquivos/ids/342438-280-280/Shorts-ASICS-Road-2-N-1-7In-Short---Masculino---Azul.Webp"
             title="Men's Essential Tee (Bone)"
             price="$30.000"
           />
