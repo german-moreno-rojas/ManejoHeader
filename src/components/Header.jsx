@@ -6,7 +6,7 @@ export default function Header() {
   return (
     <header className="p-4 border-b border-gray-300">
       <nav className="flex justify-between items-center">
-        {/* Logo (ahora es un link al inicio) */}
+        {/* Logo (link al inicio) */}
         <div className="text-2xl font-bold">
           <Link href="/">UGMONK</Link>
         </div>
