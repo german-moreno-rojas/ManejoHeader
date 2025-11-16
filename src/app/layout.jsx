@@ -1,6 +1,6 @@
 import "./globals.css";
-import LayoutClient from "./LayoutClient";
 import { CartProvider } from "../context/CartContext";
+import ClientWrapper from "./ClientWrapper";
 
 export const metadata = {
   title: "UGMONK",
@@ -12,7 +12,7 @@ export default function RootLayout({ children }) {
     <html lang="es">
       <body>
         <CartProvider>
-          <LayoutClient>{children}</LayoutClient>
+          <ClientWrapper>{children}</ClientWrapper>
         </CartProvider>
       </body>
     </html>
