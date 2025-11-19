@@ -1,6 +1,6 @@
 "use client";
 
-import LayoutClient from "./layoutClient.jsx";
+import LayoutClient from "./LayoutClient.jsx";
 
 export default function ClientWrapper({ children }) {
   return <LayoutClient>{children}</LayoutClient>;

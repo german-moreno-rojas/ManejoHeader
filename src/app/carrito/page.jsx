@@ -1,17 +1,56 @@
 "use client";
 import { useCart } from "@/context/CartContext";
+import { realizarCompra } from "@/services/comprasService";
+import { useState } from "react";
 
 export default function CarritoPage() {
   const { cart, removeFromCart, clearCart } = useCart();
+  const [loading, setLoading] = useState(false);
+  const [mensaje, setMensaje] = useState("");
+
+  // 🟢 AGREGADO — costo del envío
+  const [shippingCost, setShippingCost] = useState(0);
 
   const total = cart.reduce(
     (acc, item) => acc + item.precio * (item.quantity || 1),
     0
   );
 
+  // 🟢 AGREGADO — total final con envío
+  const totalFinal = total + shippingCost;
+
+  async function handleCheckout() {
+    setLoading(true);
+    setMensaje("");
+
+    const response = await realizarCompra(
+      cart.map((item) => ({
+        id: item.id,
+        precio: item.precio,
+        cantidad: item.quantity || 1,
+      }))
+    );
+
+    setLoading(false);
+
+    if (!response.success) {
+      setMensaje(`❌ Error: ${response.error}`);
+      return;
+    }
+
+    setMensaje("✅ Compra exitosa 🎉");
+    clearCart();
+  }
+
   return (
     <div className="max-w-5xl mx-auto p-6">
       <h1 className="text-4xl font-bold mb-6">My Cart</h1>
+
+      {mensaje && (
+        <div className="mb-4 p-3 rounded bg-green-100 border border-green-400 text-green-800">
+          {mensaje}
+        </div>
+      )}
 
       {cart.length === 0 ? (
         <div className="mt-6 border p-4 rounded-lg shadow text-gray-500">
@@ -19,7 +58,7 @@ export default function CarritoPage() {
         </div>
       ) : (
         <>
-          {/* Tabla de productos */}
+          {/* Tabla */}
           <div className="bg-white shadow rounded-lg overflow-hidden">
             <table className="w-full text-left">
               <thead className="bg-gray-100 text-gray-600 border-b">
@@ -78,8 +117,15 @@ export default function CarritoPage() {
               <h3 className="text-lg font-bold mb-4">Choose shipping mode:</h3>
 
               <div className="space-y-3">
+
+                {/* 🟢 AGREGADO — cambia a envío gratis */}
                 <label className="flex items-start gap-3 cursor-pointer">
-                  <input type="radio" name="shipping" defaultChecked />
+                  <input
+                    type="radio"
+                    name="shipping"
+                    defaultChecked
+                    onChange={() => setShippingCost(0)}
+                  />
                   <div>
                     <p className="font-semibold">Store pickup (2–5 days) — FREE</p>
                     <p className="text-gray-600 text-sm">
@@ -88,8 +134,13 @@ export default function CarritoPage() {
                   </div>
                 </label>
 
+                {/* 🟢 AGREGADO — suma envío */}
                 <label className="flex items-start gap-3 cursor-pointer">
-                  <input type="radio" name="shipping" />
+                  <input
+                    type="radio"
+                    name="shipping"
+                    onChange={() => setShippingCost(9.90)}
+                  />
                   <div>
                     <p className="font-semibold">
                       Delivery at home (today - 1 day) — 9.90€
@@ -108,16 +159,25 @@ export default function CarritoPage() {
 
               <div className="flex justify-between mb-4">
                 <span className="text-gray-600">Shipping:</span>
-                <span className="font-semibold">FREE</span>
+
+                {/* 🟢 AGREGADO — mostrar envío */}
+                <span className="font-semibold">
+                  {shippingCost === 0 ? "FREE" : `${shippingCost}€`}
+                </span>
               </div>
 
+              {/* 🟢 AGREGADO — total final */}
               <div className="flex justify-between text-xl font-bold border-t pt-4">
                 <span>Total:</span>
-                <span>${total.toLocaleString()}</span>
+                <span>${totalFinal.toLocaleString()}</span>
               </div>
 
-              <button className="mt-6 w-full bg-red-600 text-white py-3 rounded-lg text-lg font-semibold hover:bg-red-700 transition">
-                Checkout — ${total.toLocaleString()}
+              <button
+                onClick={handleCheckout}
+                disabled={loading}
+                className="mt-6 w-full bg-red-600 text-white py-3 rounded-lg text-lg font-semibold hover:bg-red-700 transition disabled:bg-gray-400"
+              >
+                {loading ? "Procesando..." : `Checkout — ${totalFinal.toLocaleString()}`}
               </button>
 
               <button
